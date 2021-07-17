@@ -33,15 +33,6 @@ public class MainActivity extends AppCompatActivity {
         startOverlayBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                NotificationCompat.Builder builder = new NotificationCompat.Builder(MainActivity.this, CHANNEL_ID)
-//                        .setSmallIcon(R.drawable.ic_launcher_background)
-//                        .setContentTitle("Title")
-//                        .setContentText("Content")
-//                        .setPriority(NotificationCompat.PRIORITY_MAX);
-//                NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MainActivity.this);
-//                notificationManager.notify(2, builder.build());
-////                startActivity(new Intent(MainActivity.this, BrightControlActivity.class));
-//                Log.i("KIM", "호출");
 
                 NotificationManager notificationManager = (NotificationManager)
                         getSystemService(Context.NOTIFICATION_SERVICE);

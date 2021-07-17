@@ -10,9 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Nighter">
         <activity
-            android:name=".BrightControlActivity"
-            android:theme="@android:style/Theme.Dialog"></activity>
-        <activity
             android:name=".MainActivity">
 
             <intent-filter>

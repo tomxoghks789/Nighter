@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Nighter</string>
+    <string name="channel_name">TOP_NOTI</string>
+    <string name="channel_description">Test</string>
+    <string name="BUTTON_RUN">O</string>
+    <string name="BUTTON_STOP">X</string>
 </resources>

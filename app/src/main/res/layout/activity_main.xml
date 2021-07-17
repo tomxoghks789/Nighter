@@ -35,6 +35,7 @@
         android:id="@+id/brightSeekBar"
         android:layout_width="381dp"
         android:layout_height="13dp"
+        android:progress="100"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.567"

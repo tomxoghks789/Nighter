@@ -4,4 +4,6 @@
     <string name="channel_description">Test</string>
     <string name="BUTTON_RUN">Enable</string>
     <string name="BUTTON_STOP">Disable</string>
+    <string name="ENABLE_MESSAGE">Nighter is running on your device!</string>
+    <string name="DISABLE_MESSAGE">Nighter has been disabled!</string>
 </resources>

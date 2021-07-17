@@ -6,7 +6,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioAttributes;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -15,78 +14,63 @@ import android.widget.SeekBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 public class MainActivity extends AppCompatActivity {
-    SeekBar brightSeekBar;
-    Button startOverlayBtn;
+    public static int NOTIFICATION_ID = 930928;
     public static String CHANNEL_ID = "NOTI_CHANNEL";
+    NotificationManager notificationManager;
+    SeekBar brightSeekBar;
+    Button enableBtn;
+    Button disableBtn;
+    String message = "";
+    NotificationCompat.Builder noti_builder;
+    NotificationChannel notificationChannel;
+    int importance = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         brightSeekBar = findViewById(R.id.brightSeekBar);
-        startOverlayBtn = findViewById(R.id.runButton);
-        createNotificationChannel();
-
-        startOverlayBtn.setOnClickListener(new View.OnClickListener() {
+        enableBtn = findViewById(R.id.runButton);
+        disableBtn = findViewById(R.id.stopButton);
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        enableBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                NotificationManager notificationManager = (NotificationManager)
-                        getSystemService(Context.NOTIFICATION_SERVICE);
                 assert notificationManager != null;
-
-                NotificationCompat.Builder builder = null;
-
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-                    int importance = NotificationManager.IMPORTANCE_HIGH;
-                    NotificationChannel notificationChannel =
-                            new NotificationChannel("ID", "Name", importance);
-
-                    AudioAttributes audioAttributes = new AudioAttributes.Builder()
-                            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                            .setUsage(AudioAttributes.USAGE_ALARM)
-                            .build();
-
+                    if (importance == 0) {
+                        importance = NotificationManager.IMPORTANCE_HIGH;
+                    }
+                    notificationChannel = new NotificationChannel("ID", "Name", importance);
                     notificationManager.createNotificationChannel(notificationChannel);
-                    builder = new NotificationCompat.Builder(MainActivity.this, notificationChannel.getId());
+                    noti_builder = new NotificationCompat.Builder(MainActivity.this, notificationChannel.getId());
                 }
-                builder.setDefaults(Notification.DEFAULT_LIGHTS);
-
-                String message = "Nighter is running on your device!";
-                builder.setSmallIcon(R.drawable.noti_icon)
+                noti_builder.setDefaults(Notification.DEFAULT_LIGHTS);
+                noti_builder.setSmallIcon(R.drawable.noti_icon)
                         .setAutoCancel(false)
                         .setPriority(NotificationCompat.PRIORITY_MAX)
                         .setOngoing(true)
                         .setOnlyAlertOnce(true)
                         .setContentTitle(getString(R.string.app_name))
-                        .setContentText(message);
+                        .setContentText(getString(R.string.ENABLE_MESSAGE));
 
                 Intent launchIntent = getPackageManager().getLaunchIntentForPackage(getPackageName());
                 launchIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
 
                 PendingIntent contentIntent = PendingIntent.getActivity(MainActivity.this, 0, launchIntent,
                         PendingIntent.FLAG_UPDATE_CURRENT);
-                builder.setContentIntent(contentIntent);
 
-                NotificationManagerCompat.from(MainActivity.this);
-                notificationManager.notify(2, builder.build());
+                noti_builder.setContentIntent(contentIntent);
+                notificationManager.notify(NOTIFICATION_ID, noti_builder.build());
             }
         });
-    }
-
-
-    private void createNotificationChannel() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.channel_name);
-            String description = getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
-            channel.setDescription(description);
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
+        disableBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notificationManager.cancel(NOTIFICATION_ID);
+            }
+        });
     }
 }

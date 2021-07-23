@@ -7,31 +7,33 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
-import android.util.TimeFormatException;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
 public class MainActivity extends AppCompatActivity {
     public static int NOTIFICATION_ID = 930928;
-    public static String CHANNEL_ID = "NOTI_CHANNEL";
     NotificationManager notificationManager;
+    NotificationCompat.Builder noti_builder;
+    NotificationChannel notificationChannel;
     SeekBar brightSeekBar;
     Button enableBtn;
     Button disableBtn;
-    NotificationCompat.Builder noti_builder;
-    NotificationChannel notificationChannel;
     int importance = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        if (!permissionCheck()) {
+            startActivity(new Intent(getApplicationContext(), PermisionActivity.class));
+            finish();
+        }
         initialize_notification();
         brightSeekBar = findViewById(R.id.brightSeekBar);
         enableBtn = findViewById(R.id.runButton);
@@ -85,6 +87,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public boolean permissionCheck() {
+        if (Settings.canDrawOverlays(this)) {
+            return true;
+        }
+        return false;
     }
 
     public void initialize_notification() {

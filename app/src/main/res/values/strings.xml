@@ -6,4 +6,10 @@
     <string name="BUTTON_STOP">Disable</string>
     <string name="ENABLE_MESSAGE">Nighter is running on your device!</string>
     <string name="DISABLE_MESSAGE">Nighter has been disabled!</string>
+    <string name="TEXT_PERMISSION_TITLE">Request permission</string>
+    <string name="TEXT_PERMISSION_CONTENT">Please grant permission to use this app properly.\nTo grant permission please click the button below.</string>
+    <string name="TEXT_BUTTON_PERMISSION_GRANTED">Permission granted</string>
+    <string name="TEXT_BUTTON_PERMISSION_DENIED">Press to grant permission!</string>
+    <string name="ok">확인</string>
+    <string name="TEXT_PERMISSION_CONTEXT">Please grant permission to use this app properly.</string>
 </resources>

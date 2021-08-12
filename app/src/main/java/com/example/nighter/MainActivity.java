@@ -61,20 +61,20 @@ public class MainActivity extends AppCompatActivity {
 
                 noti_builder.setContentIntent(contentIntent);
                 notificationManager.notify(NOTIFICATION_ID, noti_builder.build());
+                toggleService();
             }
         });
         disableBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(notificationManager.getActiveNotifications().length != 0){
+                if (notificationManager.getActiveNotifications().length != 0) {
                     notificationManager.cancel(NOTIFICATION_ID);
                     noti_builder.setSmallIcon(R.drawable.noti_icon)
                             .setContentTitle(getString(R.string.app_name))
                             .setContentText(getString(R.string.DISABLE_MESSAGE));
                     notificationManager.notify(NOTIFICATION_ID, noti_builder.build());
                     notificationManager.cancel(NOTIFICATION_ID);
-                }
-                else{
+                } else {
                     Toast.makeText(getApplicationContext(), "Nighter isn't running now..", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -115,5 +115,10 @@ public class MainActivity extends AppCompatActivity {
             notificationManager.createNotificationChannel(notificationChannel);
             noti_builder = new NotificationCompat.Builder(MainActivity.this, notificationChannel.getId());
         }
+    }
+
+    public void toggleService() {
+        Intent intent = new Intent(getApplicationContext(), OverlayService.class);
+        startService(intent);
     }
 }

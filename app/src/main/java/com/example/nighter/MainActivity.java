@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     SeekBar brightSeekBar;
     Button enableBtn;
     Button disableBtn;
+    int brightness = 0;
     int importance = 0;
 
     @Override
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         }
         initialize_notification();
         brightSeekBar = findViewById(R.id.brightSeekBar);
+        brightness = brightSeekBar.getProgress();
         enableBtn = findViewById(R.id.runButton);
         disableBtn = findViewById(R.id.stopButton);
         enableBtn.setOnClickListener(new View.OnClickListener() {
@@ -63,17 +66,23 @@ public class MainActivity extends AppCompatActivity {
         disableBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                notificationManager.cancel(NOTIFICATION_ID);
-                noti_builder.setSmallIcon(R.drawable.noti_icon)
-                        .setContentTitle(getString(R.string.app_name))
-                        .setContentText(getString(R.string.DISABLE_MESSAGE));
-                notificationManager.notify(NOTIFICATION_ID, noti_builder.build());
-                notificationManager.cancel(NOTIFICATION_ID);
+                if(notificationManager.getActiveNotifications().length != 0){
+                    notificationManager.cancel(NOTIFICATION_ID);
+                    noti_builder.setSmallIcon(R.drawable.noti_icon)
+                            .setContentTitle(getString(R.string.app_name))
+                            .setContentText(getString(R.string.DISABLE_MESSAGE));
+                    notificationManager.notify(NOTIFICATION_ID, noti_builder.build());
+                    notificationManager.cancel(NOTIFICATION_ID);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Nighter isn't running now..", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         brightSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                brightness = progress;
                 Log.i("KIM", String.valueOf(progress));
             }
 

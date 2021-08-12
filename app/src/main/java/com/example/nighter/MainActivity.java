@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
     SeekBar brightSeekBar;
     Button enableBtn;
     Button disableBtn;
-    int brightness = 0;
+    float brightness = 0;
     int importance = 0;
 
     @Override
@@ -83,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
         brightSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                brightness = progress;
-                Log.i("KIM", String.valueOf(progress));
+                brightness = (float) progress / 150;
+                Log.i("KIM", String.valueOf(1 - brightness));
             }
 
             @Override

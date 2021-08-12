@@ -2,6 +2,7 @@ package com.example.nighter;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
@@ -46,8 +47,8 @@ public class OverlayService extends Service {
         overlayView = new LinearLayout(this);
         overlayView.setBackgroundColor(Color.parseColor("#000000"));
         DisplayMetrics metrics = getResources().getDisplayMetrics();
-        int width = metrics.widthPixels;
-        int height = metrics.heightPixels;
+        int width = metrics.widthPixels + getNaviBarHeight() * 3;
+        int height = metrics.heightPixels + getNaviBarHeight() * 3;
         int x = 0;
         int y = 0;
         WindowManager.LayoutParams params = new WindowManager.LayoutParams((width > height) ? width : height, (width > height) ? width : height, x, y,
@@ -59,5 +60,15 @@ public class OverlayService extends Service {
         WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         overlayView.setAlpha(brightness);
         wm.addView(overlayView, params);
+    }
+
+    public int getNaviBarHeight() {
+        int result = 0;
+        Resources resources = getApplicationContext().getResources();
+        int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = resources.getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 }

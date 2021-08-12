@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void toggleService() {
         Intent intent = new Intent(getApplicationContext(), OverlayService.class);
-        if(!stopService(intent)){
+        if (!stopService(intent)) {
             startService(intent);
         }
     }

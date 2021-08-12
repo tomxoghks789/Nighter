@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.IBinder;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,6 +15,7 @@ import androidx.annotation.Nullable;
 
 public class OverlayService extends Service {
     LinearLayout overlayView;
+    float brightness = 0.5f;
 
     @Nullable
     @Override
@@ -35,27 +37,30 @@ public class OverlayService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (overlayView != null) {
+            WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
+            wm.removeView(overlayView);
+            Log.i("KIM", "Disabled!");
+        }
     }
 
     public void RunOverlayService() {
-        Log.i("KIM", "qqqq");
+        Log.i("KIM", "Running!");
         overlayView = new LinearLayout(this);
-        int col = Color.parseColor("#4286f4");
+        int col = Color.parseColor("#000000");
         overlayView.setBackgroundColor(col);
-        int width = 500;
-        int height = 500;
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+
+        int width = metrics.widthPixels;
+        int height = metrics.heightPixels;
         int x = 0;
         int y = 0;
         WindowManager.LayoutParams params = new WindowManager.LayoutParams(width, height, x, y,
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
-                        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
-                        WindowManager.LayoutParams.FLAG_WATCH_OUTSIDE_TOUCH,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                 PixelFormat.TRANSLUCENT);
         WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
-        LinearLayout layout = (LinearLayout) View.inflate(this, R.layout.overlay, null);
-
-        overlayView.addView(layout);
+        overlayView.setAlpha(brightness);
         wm.addView(overlayView, params);
     }
 }

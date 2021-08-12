@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
                             .setContentText(getString(R.string.DISABLE_MESSAGE));
                     notificationManager.notify(NOTIFICATION_ID, noti_builder.build());
                     notificationManager.cancel(NOTIFICATION_ID);
+                    toggleService();
                 } else {
                     Toast.makeText(getApplicationContext(), "Nighter isn't running now..", Toast.LENGTH_SHORT).show();
                 }
@@ -119,6 +120,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void toggleService() {
         Intent intent = new Intent(getApplicationContext(), OverlayService.class);
-        startService(intent);
+        if(!stopService(intent)){
+            startService(intent);
+        }
     }
 }
